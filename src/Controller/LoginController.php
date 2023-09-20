@@ -11,7 +11,6 @@ use App\Repository\UserRepository;
 class LoginController extends AbstractController
 {
     #[Route('/api/login', name: 'app_login', methods: ['POST','GET'])]
-
     public function login(Request $request, UserRepository $userRepository): Response
     {
         if ($request->isMethod('POST')) {

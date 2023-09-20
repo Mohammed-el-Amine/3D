@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+{% block title %}INSCRIPTION
 {% endblock %}
 
-{% block title %}Inscription{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/register.css') }}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
 
 {% block body %}
-<div class = "container">
-    <h1>Inscription</h1>
+<div class="container">
+	<h1>Inscription</h1>
 
-    {{ app.flashes('error')|join('<p>') }}
+	{{ app.flashes('error')|join('<p>') }}
 
-    {{ form_start(form) }}
+	{{ form_start(form) }}
 
-    {{ form_row(form.username, {'label': 'Nom d\'utilisateur'}) }}
+	{{ form_row(form.username, {'label': 'Nom d\'utilisateur'}) }}
     {{ form_row(form.email, {'label': 'Adresse email'}) }}
     {{ form_row(form.password, {'label': 'Mot de passe'}) }}
     <div class="form-group">
