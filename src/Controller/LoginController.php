@@ -10,7 +10,8 @@ use App\Repository\UserRepository;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login')]
+    #[Route('/api/login', name: 'app_login', methods: ['POST','GET'])]
+
     public function login(Request $request, UserRepository $userRepository): Response
     {
         if ($request->isMethod('POST')) {
@@ -20,7 +21,6 @@ class LoginController extends AbstractController
             
             $userExisting = $userRepository->findOneBy(['email' => $emailOrUsername]);
             if (!$userExisting) {
-                // Si l'utilisateur n'est pas trouvé par email, essayez de le trouver par nom d'utilisateur
                 $userExisting = $userRepository->findOneBy(['username' => $emailOrUsername]);
             }
 

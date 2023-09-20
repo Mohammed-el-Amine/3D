@@ -23,7 +23,8 @@ class RegisterController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/api/register', name: 'app_register', methods: ['GET', 'POST'])]
+
     public function register(Request $request,EntityManagerInterface $entityManager): Response
     {
         $user = new User();
