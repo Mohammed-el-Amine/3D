@@ -23,7 +23,7 @@ class RegisterController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/register', name: 'app_register', methods: ['GET', 'POST'])]
+    #[Route('/api/inscription', name: 'app_inscription', methods: ['GET', 'POST'])]
     public function register(Request $request,EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -75,7 +75,7 @@ class RegisterController extends AbstractController
             
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_connexion');
             }
         }
         return $this->render('Register/index.html.twig', [

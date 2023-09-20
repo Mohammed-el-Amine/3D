@@ -10,28 +10,34 @@ use App\Repository\UserRepository;
 
 class LoginController extends AbstractController
 {
-    #[Route('/api/login', name: 'app_login', methods: ['POST','GET'])]
+    #[Route('/api/connexion', name: 'app_connexion', methods: ['POST', 'GET'])]
     public function login(Request $request, UserRepository $userRepository): Response
     {
         if ($request->isMethod('POST')) {
             $emailOrUsername = $request->request->get('email_or_username');
             $password = $request->request->get('password');
 
-            
-            $userExisting = $userRepository->findOneBy(['email' => $emailOrUsername]);
-            if (!$userExisting) {
-                $userExisting = $userRepository->findOneBy(['username' => $emailOrUsername]);
+            $user = $userRepository->findOneBy(['email' => $emailOrUsername]);
+            if (!$user) {
+                $user = $userRepository->findOneBy(['username' => $emailOrUsername]);
             }
 
-            if (!$userExisting) {
+            if (!$user) {
                 throw new \Exception('Utilisateur non trouvé');
             }
 
             $hashedPassword = hash('sha256', $password);
 
-            if ($hashedPassword === $userExisting->getPassword()) {
+            $role = $user->getRole();
+            if ($hashedPassword === $user->getPassword() && $role[0] == 'ADMIN') {
+                $session = $request->getSession();
+                $session->set('user_id', $user->getId());
+                return $this->redirectToRoute('app_admin_panel');
+            } else {
+                $session = $request->getSession();
+                $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('app_home');
-            }
+            }            
         }
         return $this->render('Login/index.html.twig');
     }

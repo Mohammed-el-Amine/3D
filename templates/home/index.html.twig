@@ -10,10 +10,16 @@
 
 {% block body %}
 
-	<div class="example-wrapper">
-		<h1>Hello
-			{{ controller_name }}! ✅</h1>
+	{# Dans votre modèle de vue Twig #}
+	{% if name is not null %}
+		<p>Bienvenue,
+			{{name}}</p>
+		<a href="{{ path('app_deconnexion') }}">Déconnexion</a>
 
-		This friendly message is coming from: Amine
-	</div>
+		{# Importer page acceuille #}
+
+	{% else %}
+		<p>Bienvenue</p>
+		{#Importer la page d'acceuille#}
+	{% endif %}
 {% endblock %}
