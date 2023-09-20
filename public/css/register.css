@@ -1,0 +1,46 @@
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-top: 20px;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.custom-error-class {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
