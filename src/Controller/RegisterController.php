@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RegisterController extends AbstractController
 {
@@ -74,10 +75,13 @@ class RegisterController extends AbstractController
                 $passwordHasher = hash('sha256', $passwordClaire);
                 $user->setPassword($passwordHasher);
                 $user->setRole(['ROLE_USER']);
+                $user->setToken( bin2hex(random_bytes(16)));
 
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
+
                 $this->sendVerificationEmail($user, $mailer);
+
                 return $this->redirectToRoute('app_connexion');
             }
         }
@@ -88,11 +92,15 @@ class RegisterController extends AbstractController
 
     private function sendVerificationEmail(User $user, MailerInterface $mailer): void
     {
+        $url = $this->generateUrl('app_verification_email', [
+            'id' => $user->getId(),
+            'token' => $user->getToken(), 
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
         $email = (new Email())
-            ->from('votre_email@example.com')
-            ->to($user->getEmail()) // Utilisez l'e-mail de l'utilisateur ici
+            ->from('3Dbazard@support.com')
+            ->to($user->getEmail()) 
             ->subject('Vérification de l\'e-mail')
-            ->html('<p>Merci de vérifier votre adresse e-mail en cliquant sur le lien suivant : <a href="#">Lien de vérification</a></p>');
+            ->html('<p>Merci de vérifier votre adresse e-mail en cliquant sur le lien suivant : <a href="' . $url . '">Lien de vérification</a></p>');
 
         $mailer->send($email);
     }

@@ -38,6 +38,9 @@ class User
     #[ORM\Column]
     private ?bool $isVerified = false;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $token = null;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
@@ -141,6 +144,18 @@ class User
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
