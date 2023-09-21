@@ -7,7 +7,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 
-
 class HomeController extends AbstractController
 {
     #[Route('/api/home', name: 'app_home')]
