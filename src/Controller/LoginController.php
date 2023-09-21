@@ -26,9 +26,14 @@ class LoginController extends AbstractController
                 throw new \Exception('Utilisateur non trouvé');
             }
 
+            if ($user->isActive() != 1){
+                throw new \Exception('Votre compte à été désactiver. Merci de contacter le support');
+            }
+
             $hashedPassword = hash('sha256', $password);
 
             $role = $user->getRole();
+            
             if ($hashedPassword === $user->getPassword() && $role[0] == 'ADMIN') {
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());

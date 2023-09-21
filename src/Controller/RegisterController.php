@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -12,7 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class RegisterController extends AbstractController
 {
@@ -24,7 +26,7 @@ class RegisterController extends AbstractController
     }
 
     #[Route('/api/inscription', name: 'app_inscription', methods: ['GET', 'POST'])]
-    public function register(Request $request,EntityManagerInterface $entityManager): Response
+    public function register(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $user = new User();
         $created_at = new \DateTimeImmutable();
@@ -64,22 +66,34 @@ class RegisterController extends AbstractController
 
             if ($existingUser) {
                 $this->addFlash('error', 'Cette adresse email est déjà utilisée.', 'custom-error-class');
-            }else if ($existingUsername){
-                $this->addFlash('error','Ce nom d\'utilisateur est déja utilié.', 'custom-error-class');
+            } else if ($existingUsername) {
+                $this->addFlash('error', 'Ce nom d\'utilisateur est déja utilié.', 'custom-error-class');
             } else {
 
-            $passwordClaire = $user->getPassword();
-            $passwordHasher = hash('sha256', $passwordClaire);
-            $user->setPassword($passwordHasher);
-            $user->setRole(['ROLE_USER']);
-            
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-            return $this->redirectToRoute('app_connexion');
+                $passwordClaire = $user->getPassword();
+                $passwordHasher = hash('sha256', $passwordClaire);
+                $user->setPassword($passwordHasher);
+                $user->setRole(['ROLE_USER']);
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+                $this->sendVerificationEmail($user, $mailer);
+                return $this->redirectToRoute('app_connexion');
             }
         }
         return $this->render('Register/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function sendVerificationEmail(User $user, MailerInterface $mailer): void
+    {
+        $email = (new Email())
+            ->from('votre_email@example.com')
+            ->to($user->getEmail()) // Utilisez l'e-mail de l'utilisateur ici
+            ->subject('Vérification de l\'e-mail')
+            ->html('<p>Merci de vérifier votre adresse e-mail en cliquant sur le lien suivant : <a href="#">Lien de vérification</a></p>');
+
+        $mailer->send($email);
     }
 }
