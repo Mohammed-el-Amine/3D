@@ -38,11 +38,11 @@ class LoginController extends AbstractController
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('app_admin_panel');
-            } else {
+            } else if ($user->getPassword() == $hashedPassword) {
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('app_acceuil');
-            }            
+            }          
         }
         return $this->render('Login/index.html.twig');
     }
