@@ -41,7 +41,7 @@ class LoginController extends AbstractController
             } else {
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_acceuil');
             }            
         }
         return $this->render('Login/index.html.twig');

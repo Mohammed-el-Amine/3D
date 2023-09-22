@@ -68,7 +68,7 @@ class RegisterController extends AbstractController
             if ($existingUser) {
                 $this->addFlash('error', 'Cette adresse email est déjà utilisée.', 'custom-error-class');
             } else if ($existingUsername) {
-                $this->addFlash('error', 'Ce nom d\'utilisateur est déja utilié.', 'custom-error-class');
+                $this->addFlash('error', 'Ce nom d\'utilisateur est déja utilisé.', 'custom-error-class');
             } else {
 
                 $passwordClaire = $user->getPassword();
