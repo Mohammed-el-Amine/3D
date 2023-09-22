@@ -26,14 +26,14 @@ class LoginController extends AbstractController
                 throw new \Exception('Utilisateur non trouvé');
             }
 
-            if ($user->isActive() != 1){
+            if ($user->isActive() != 1) {
                 throw new \Exception('Votre compte à été désactiver. Merci de contacter le support');
             }
 
             $hashedPassword = hash('sha256', $password);
 
             $role = $user->getRole();
-            
+
             if ($hashedPassword === $user->getPassword() && $role[0] == 'ROLE_ADMIN') {
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
@@ -42,7 +42,7 @@ class LoginController extends AbstractController
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('app_acceuil');
-            }          
+            } else return $this->render('Login/index.html.twig');
         }
         return $this->render('Login/index.html.twig');
     }
