@@ -1,23 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Acceuille
+{% block title %}Accueil
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/acceuil.css') }}">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 {% endblock %}
 
 {% block body %}
 
-	{# Dans votre modèle de vue Twig #}
-	{% if name is not null %}
-		<p>Bienvenue,
-			{{name}}</p>
-		<a href="{{ path('app_deconnexion') }}">Déconnexion</a>
-	{% else %}
-		<p>Bienvenue</p>
-	{% endif %}
-
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-6 offset-md-3 text-center">
+				<div class="mt-4">
+					<a href="{{ path('app_inscription') }}" class="btn btn-primary">Inscription</a>
+					<a href="{{ path('app_connexion') }}" class="btn btn-primary">Connexion</a>
+				</div>
+				{% if name is not null %}
+					<p class="welcome-message">Bienvenue,
+						{{ name }}</p>
+					<a href="{{ path('app_deconnexion') }}" class="btn btn-primary">Déconnexion</a>
+					<a href="{{ path('app_acceuil') }}" class="btn btn-primary">Accueil</a>
+				{% else %}
+					<p class="welcome-message">Bienvenue à vous, venez découvrir l'univers de l'impression 3D</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

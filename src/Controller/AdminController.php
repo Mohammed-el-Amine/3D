@@ -24,9 +24,10 @@ class AdminController extends AbstractController
         $user = $userRepository->find($userId);
         $role = $user->getRole();
 
-        if ($user && $role[0] == 'ADMIN') {
+        if ($user && $role[0] == 'ROLE_ADMIN') {
             return $this->render('Admin/index.html.twig', [
                 'controller_name' => 'AdminController',
+                'name' => $user->getUsername(),
             ]);
         } else {
             return $this->redirectToRoute('app_connexion');

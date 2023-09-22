@@ -9,7 +9,8 @@ use App\Repository\UserRepository;
 
 class HomeController extends AbstractController
 {
-    #[Route('/api/home', name: 'app_home')]
+    #[Route('/api/acceuil', name: 'app_acceuil')]
+    #[Route('/')]
     public function index(UserRepository $userRepository, Request $request,)
     {
         $session = $request->getSession();

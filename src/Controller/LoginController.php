@@ -34,7 +34,7 @@ class LoginController extends AbstractController
 
             $role = $user->getRole();
             
-            if ($hashedPassword === $user->getPassword() && $role[0] == 'ADMIN') {
+            if ($hashedPassword === $user->getPassword() && $role[0] == 'ROLE_ADMIN') {
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
                 return $this->redirectToRoute('app_admin_panel');
