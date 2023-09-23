@@ -33,14 +33,19 @@ class LoginController extends AbstractController
             $hashedPassword = hash('sha256', $password);
 
             $role = $user->getRole();
+            $active = $user->isActive();
 
-            if ($hashedPassword === $user->getPassword() && $role[0] == 'ROLE_ADMIN') {
+            if ($hashedPassword === $user->getPassword() && $role[0] == 'ROLE_ADMIN' && $active != false) {
+
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
+
                 return $this->redirectToRoute('app_admin_panel');
-            } else if ($user->getPassword() == $hashedPassword) {
+            } else if ($user->getPassword() == $hashedPassword && $role[0] == 'ROLE_USER' && $active != false) {
+
                 $session = $request->getSession();
                 $session->set('user_id', $user->getId());
+
                 return $this->redirectToRoute('app_acceuil');
             } else return $this->render('Login/index.html.twig');
         }

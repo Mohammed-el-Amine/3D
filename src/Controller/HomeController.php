@@ -16,12 +16,12 @@ class HomeController extends AbstractController
         $session = $request->getSession();
         $userId = $session->get('user_id');
 
-        $name = null;
-
         if ($userId) {
             $user = $userRepository->find($userId);
             if ($user) {
                 $name = $user->getUsername();
+            } else {
+                $name = null;
             }
         }
 
